@@ -1,0 +1,181 @@
+#library tine referinte la books, nu le creaza, distruge etc -> agregare
+#library ese respo sa si creeze cartiile(instante), romb negru -> comp
+#linie simpla - relatie asociere
+
+
+class Author: #agregare cu Book
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):# this needs to exist in  order to print object in another class
+        return self.name
+
+    def print(self):
+        print(self.name)
+
+
+class Image:#compozitie cu subchapter
+    def __init__(self, imageName):
+        self.imageName = imageName
+
+    def __str__(self):
+        return self.imageName
+
+    def print(self):
+        print(self.imageName)
+
+class Paragraph:#compozitie cu subchapter
+
+    def __init__(self, text):
+        self.text = text
+
+    def __str__(self):
+        return self.text
+    
+    def print(self):
+        print(self.text)
+
+
+class Table:#compozitie cu subchapter
+    
+    def __init__(self, title):
+        self.title = title
+
+    def __str__(self):
+        return self.title
+    
+    def print(self):
+        print(self.title)
+
+class SubChapter:#compozitie cu chapter
+
+    paragraphs = []
+    images = []
+    tables = []
+    
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+    
+    def createNewParagraph(self, text):
+        self.paragraphs.append(Paragraph(text))
+        
+    def createNewTable(self, title):
+        self.tables.append(Table(title))
+
+    def createNewImage(self, imageName):
+        self.images.append(Image(imageName))
+    
+    def print(self):
+        print(self.name)
+        
+        if self.paragraphs:
+            for x in self.paragraphs:
+                print("Paragraph:", x)
+
+        if self.images:
+            for x in self.images:
+                print("Image with name:", x)
+
+        if self.tables:
+            for x in self.tables:
+                print("Table with title:", x)
+
+
+
+class Chapter:# compozitie cu book
+    
+    subchapters = []
+
+    def __init__(self, name):
+        self.name = name
+    def __str__(self):
+        return self.name
+    
+
+    def createSubChapter(self, nume):
+        new = SubChapter(nume)
+        self.subchapters.append(new)
+        index = self.subchapters.index(new)
+        return index
+    
+    def getSubChapter(self, index):
+        return self.subchapters[index]
+    
+    def print(self):
+        print(self.name)
+
+        if self.subchapters:
+            for x in self.subchapters:
+                print("Subchapter:", x)
+        
+
+
+class Book:
+
+    chapters = []
+    
+    def __init__(self, title):
+        self.title = title
+
+    def addAuthor(self, a: Author):
+        self.author = a
+
+    def __str__(self):
+        author_str = str(self.author) if self.author else "No author"
+        return f"Title: {self.title}, Author: {author_str}"
+
+    def createChapter(self, nume):
+        index = Chapter(nume)
+        self.chapters.append(index)
+        new = self.chapters.index(index)
+        return new
+    
+    def getChapter(self, index):
+        return self.chapters[index]
+            
+    def print(self):
+        print("Title:", self.title)
+        if self.author:
+            print("Author:", self.author)
+        if self.chapters:
+            for x in self.chapters:
+                print(x)
+
+
+
+book = Book("ceva")
+autor1 = Author("Marin Ceva")
+
+book.addAuthor(autor1)
+chapterIndex = book.createChapter("Capitolul 1") #returns index
+chapter = book.getChapter(chapterIndex)
+subChapterIndex = chapter.createSubChapter("Capitolul 1.1")
+subchapter = chapter.getSubChapter(subChapterIndex)
+
+subchapter.createNewParagraph("Paragraph 1")
+subchapter.createNewParagraph("Paragraph 2")
+subchapter.createNewParagraph("Paragraph 3")
+subchapter.createNewImage("Image 1")
+subchapter.createNewParagraph("Paragraph 4")
+subchapter.createNewTable("Table 1")
+subchapter.createNewParagraph("Paragraph 5")
+
+subchapter.print()
+
+# print(chapter)
+# print(type(subchapter))
+# print(book)
+# print(subchapter)
+
+# class TableOfContents:#asociere cu Book
+#     pass
+
+
+
+
+
+
