@@ -1,0 +1,15 @@
+import time
+
+class Image:#compozitie cu subchapter
+    def __init__(self, imageName):
+        self.imageName = imageName
+        try:
+            print("ceav")
+        except:
+            pass
+
+    def __str__(self):
+        return self.imageName
+
+    def print(self):
+        print(self.imageName)
