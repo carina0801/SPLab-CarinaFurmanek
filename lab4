@@ -1,15 +1,272 @@
 import time
+from abc import ABC, abstractmethod
+#lab 4 - proxy pattern
 
-class Image:#compozitie cu subchapter
-    def __init__(self, imageName):
-        self.imageName = imageName
+
+class Element(ABC):
+    
+    @abstractmethod
+    def print():
+        pass
+
+    @abstractmethod
+    def add(self):
+        pass
+
+    @abstractmethod
+    def remove(self):
+        pass
+
+    @abstractmethod
+    def get(integer):
+        pass
+
+
+class Picture(ABC):
+    
+    @abstractmethod
+    def url():
+        pass
+
+    @abstractmethod
+    def dim(self):
+        pass
+
+    @abstractmethod
+    def content(self):
+        pass
+
+
+
+
+
+
+
+class Image(Element, Picture):
+
+    def __init__(self, url):
+        self.url = url
+
         try:
-            print("ceav")
-        except:
+            
+            time.sleep(5)  # Simulate a 5-second delay
+            
+        except KeyboardInterrupt:
+        # Handle interruption (e.g., user presses Ctrl+C)
+            print("Loading interrupted by the user.")
+
+        except Exception as e:
+        # Handle other unexpected exceptions
+            print(f"An unexpected error occurred: {e}")
+
+        finally:
+        # This block always executes
             pass
 
-    def __str__(self):
-        return self.imageName
+    def add():
+        pass
+
+    def remove():
+        pass
 
     def print(self):
-        print(self.imageName)
+        print(f'Image with name {self.url}')
+
+    def get():
+        pass
+
+    def content():
+        pass
+
+    def dim():
+        pass
+    def url():
+        pass
+
+class ImageProxy(Picture, Element):
+
+    def __init__(self, url):
+        self.url = url
+        self.reallmg = None
+
+    def print(self) -> Image:
+        if self.reallmg is None:
+            self.reallmg = Image(self.url)
+            
+        return self.reallmg.print()
+    
+
+    def content():
+        pass
+
+    def dim():
+        pass
+    def url():
+        pass
+
+    def add():
+        pass
+
+    def remove():
+        pass
+
+    def get():
+        pass
+        
+
+
+
+
+#classes which inherit from interface element
+
+#concrete implementation of interface element
+class ConcreteElement(Element):
+    def some_method(self):
+        print("Implementation of some_method in ConcreteElement")
+
+
+
+class Paragraph(Element):
+
+    def __init__(self, text):
+        self.text = text
+
+    def add():
+        pass
+
+    def get():
+        pass
+
+    def remove():
+        pass
+
+    def print(self):
+        print(self.text)
+
+#class section is also in aggregation with interface element(it contains an object of type element
+# - which will be concreteElement here
+class Section(Element):
+
+    def __init__(self, title):
+        self.title = title
+        self.children = []
+
+    def print(self):
+        print(f"Section: {self.title}")
+        for child in self.children:
+            child.print()
+
+    def add(self, element):
+        self.children.append(element)
+
+    def remove(self, element):
+        self.children.remove(element)
+
+    def get(self, index):
+        if 0 <= index < len(self.children):
+            return self.children[index]
+        return None
+
+    
+
+    
+
+class TableOfContents(Element):
+
+    def __init__(self, something):
+        self.something = something
+
+
+
+
+class Table(Element):
+    def __init__(self, something):
+        self.something = something
+
+
+
+
+#author is in aggregation with book
+
+class Author():
+
+    def __init__(self, name):
+        self.name = name
+        
+
+    def print(self):
+        print(self.name)
+
+        
+#class book inherits from class section and is also in aggregation with class Author
+        
+class Book(Section):
+
+    def __init__(self, title):
+        self.title = title
+        self.contents = []
+        self.author = None
+        
+    def addAuthor(self, a: Author):
+        self.author = a
+
+
+    def addContents(self, e: Element):
+        
+        self.contents.append(e)
+
+    def print(self):
+        
+        print(self.title)
+        if self.author:
+            print("cev")
+        print("-------------------")
+        for content in self.contents:
+            content.print()
+
+        
+
+    
+
+
+
+if __name__ == "__main__":
+
+    start_time = int(time.time() * 1000) 
+   
+    img1 = ImageProxy("Pamela Anderson")
+    img2 = ImageProxy("Kim Kardashian")
+    img3 = ImageProxy("Kirby Griffin")
+
+
+    playboyS1 = Section("Front Cover")
+    playboyS2 = Section("Summer Girls")
+    
+
+    playboyS1.add(img1)
+    playboyS2.add(img2)
+    playboyS2.add(img3)
+
+    playboy = Book("Playboy")
+
+    playboy.addContents(playboyS1)
+    playboy.addContents(playboyS1)
+
+    end_time = int(time.time() * 1000) 
+
+    print(f'Creation of the conent took {end_time-start_time} milliseconds')
+
+    start_time = int(time.time() * 1000) 
+
+    playboyS1.print()
+    end_time= int(time.time() * 1000) 
+    
+    print(f'Printing of section 1 took {end_time-start_time} milliseconds')
+
+    start_time = int(time.time() * 1000) 
+
+    playboyS1.print()
+    end_time= int(time.time() * 1000) 
+    
+    print(f'Printing of section 1 again took {end_time-start_time} milliseconds')
+
